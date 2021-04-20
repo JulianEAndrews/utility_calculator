@@ -23,7 +23,7 @@ def utility_sum():
         internet = make_flt("Give me the internet bill: $")
         electricity = make_flt("Give me the electrical bill: $")
         conf = input(
-            f"{water=} {gas=} {internet=} {electricity=}, correct?  "
+            f"{water} {gas} {internet} {electricity}, correct?  "
         ).casefold()
         if conf in ["y", "yes"]:
             break
@@ -61,10 +61,10 @@ def utility_calc(total):
     num_roommates = 0
     num_cats = 0
     # TODO this is broked
-    for roommate in json_data["people"]:
-        print(roommate)
-        print(type(roommate))
-        room_type = roommate["type"]
+    for thing in json_data["people"]:
+        print(thing["name"])
+        print(thing["type"])
+        room_type = thing["type"]
         if room_type == "human":
             num_roommates += 1
         elif room_type == "cat":
@@ -76,6 +76,8 @@ def utility_calc(total):
     total_per = round(total / num_roommates, 2)
     print(f"${total_per}")
 
+
+# write function to delete or update an existing roommate.
 
 def new_person():
     user_input = (
@@ -105,21 +107,6 @@ def new_person():
         sys.exit()
     else:
         menu()
-
-
-"""
-for _ in list:
-    if _["type"] == "cat":
-        print(_["name"])
-
-for _ in list:
-    if _["type"] == "kiln":
-        print(_["users"])
-        if "clark" in _["users"]:
-            print("Da fuk?")
-        if "panda" not in _["users"]:
-            print("No. Wrong.")
-            """
 
 # Use a chain map for default settings when intializing new list info.
 

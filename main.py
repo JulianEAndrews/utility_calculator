@@ -102,8 +102,9 @@ def user_menu():
         except KeyboardInterrupt:
             print("Interrupted")
 
+
 def new_person():
-    load_json()
+    json_data = load_json()
 
     new_name = input("Name: ").title()
     new_type = input("Type (roommate, cat, item): ")
@@ -117,31 +118,33 @@ def new_person():
 
 
 def edit_person():
-    with open("test.json", "r") as json_file:
-        json_data = json.load(json_file)
+    json_data = load_json()
 
     for thing in json_data["people"]:
-        print(json_data["name"])
+        print(thing["name"], thing["type"])
     person_input = input("Please select person: ")
 
     for person in json_data["people"]:
-        if person == person_input:
+        if person["name"] == person_input:
             edit_name = input("Name: ").title()
             edit_type = input("Type (roommate, cat, item): ")
             edit_dict = {"name": edit_name, "type": edit_type}
             json_data["people"].update(edit_dict)
 
-    with open("test,json", "w") as json_file:
-        json.dump(json_data, json_file, indent = 4)
+    dump_json(json_data)
+
 
 def load_json():
     with open("test.json", "r") as json_file:
         json_data = json.load(json_file)
-        return json_data
+
+    return json_data
+
 
 def dump_json(json_data):
     with open("test.json", "w") as json_file:
         json.dump(json_data, json_file, indent=4)
+
 
 def time(json_data):
     date = datetime.now()

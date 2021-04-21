@@ -11,7 +11,7 @@ def menu():
     if select == "u" or select == "1":
         utility_sum()
     elif select == "n" or select == "2":
-        new_person()
+        user_menu()
     elif select == "e" or select == "3":
         sys.exit()
 
@@ -60,12 +60,12 @@ def utility_calc(total):
     # iterate through json data to add up number of roommates, cats, etc.
     num_roommates = 0
     num_cats = 0
-    # TODO this is broked
+    # TODO: build out calculator
     for thing in json_data["people"]:
         print(thing["name"])
         print(thing["type"])
         room_type = thing["type"]
-        if room_type == "human":
+        if room_type == "roommate":
             num_roommates += 1
         elif room_type == "cat":
             num_cats += 1
@@ -79,42 +79,85 @@ def utility_calc(total):
 
 # write function to delete or update an existing roommate.
 
-def new_person():
+def user_menu():
     user_input = (
-        input("Would you like to add a new person or item? Choose (y) or (n): ")
+        input("Would you like to add a new person/item (a),"
+              "edit a person/item (e),"
+              "delete a person/item (d)?: ")
         .casefold()
         .strip()
     )
-    if user_input == "y":
-        with open("test.json", "r") as json_file:
-            json_data = json.load(json_file)
+    while True:
+        try:
+            if user_input == "a":
+                new_person()
+            elif user_input == "e":
+                edit_person()
+            elif user_input == "n":
+                menu()
+            elif user_input == "e":
+                sys.exit()
+            else:
+                menu()
+        except KeyboardInterrupt:
+            print("Interrupted")
 
-        new_name = input("Name: ").title()
-        new_type = input("Type (human, cat, item): ")
-        new_dict = {"name": new_name, "type": new_type}
+def new_person():
+    load_json()
 
-        date = datetime.now()
-        timestamp = str(round(datetime.timestamp(date)))
+    new_name = input("Name: ").title()
+    new_type = input("Type (roommate, cat, item): ")
+    new_dict = {"name": new_name, "type": new_type}
 
-        json_data["dt"] = timestamp
-        json_data["people"].append(new_dict)
+    time(json_data)
 
-        with open("test.json", "w") as json_file:
-            json.dump(json_data, json_file, indent=4)
-    elif user_input == "n":
-        menu()
-    elif user_input == "e":
-        sys.exit()
-    else:
-        menu()
+    json_data["people"].append(new_dict)
 
-# Use a chain map for default settings when intializing new list info.
+    dump_json(json_data)
 
-# Total cost of utilties -> calculate kiln cost, subtract kiln cost -> calculate price per day for bill period ->
+
+def edit_person():
+    with open("test.json", "r") as json_file:
+        json_data = json.load(json_file)
+
+    for thing in json_data["people"]:
+        print(json_data["name"])
+    person_input = input("Please select person: ")
+
+    for person in json_data["people"]:
+        if person == person_input:
+            edit_name = input("Name: ").title()
+            edit_type = input("Type (roommate, cat, item): ")
+            edit_dict = {"name": edit_name, "type": edit_type}
+            json_data["people"].update(edit_dict)
+
+    with open("test,json", "w") as json_file:
+        json.dump(json_data, json_file, indent = 4)
+
+def load_json():
+    with open("test.json", "r") as json_file:
+        json_data = json.load(json_file)
+        return json_data
+
+def dump_json(json_data):
+    with open("test.json", "w") as json_file:
+        json.dump(json_data, json_file, indent=4)
+
+def time(json_data):
+    date = datetime.now()
+    timestamp = str(round(datetime.timestamp(date)))
+
+    json_data["dt"] = timestamp
+    return json_data
+
+# Use a chain map for default settings when initializing new list info.
+
+# Total cost of utilities -> calculate kiln cost, subtract kiln cost -> calculate price per day for bill period ->
 # Charge cats and subtract that from total -> divide total remaining cost by number of roommates -> charge roommates
 
 # Complete: Create function that adds new roommate/cat to main database
 # if water month then factor in 2 month cost with days of cats
+
 
 if __name__ == "__main__":
     print(

@@ -6,11 +6,11 @@ from datetime import datetime
 def menu():
     print("\nSelect from the following menu options:")
     select = input(
-        "1. Utility Calculator (u)\n2. New Person (n)\n3. Exit (e)\n: "
+        "1. Utility Calculator (u)\n2. User Menu (m)\n3. Exit (e)\n: "
     ).casefold()
     if select == "u" or select == "1":
         utility_sum()
-    elif select == "n" or select == "2":
+    elif select == "m" or select == "2":
         user_menu()
     elif select == "e" or select == "3":
         sys.exit()
@@ -73,19 +73,19 @@ def utility_calc(total):
 
 def user_menu():
     user_input = (
-        input("Would you like to add a new person/item (a),"
-              "edit a person/item (e),"
-              "delete a person/item (d)?: ")
+        input("Would you like to:\n1. Add a new person/item (a),\n"
+              "2. Edit a person/item (e),\n"
+              "3. Delete a person/item (d)?\n: ")
         .casefold()
         .strip()
     )
     while True:
         try:
-            if user_input == "a":
+            if user_input == "a" or user_input == "1":
                 new_person()
-            elif user_input == "e":
+            elif user_input == "e" or user_input == "2":
                 edit_person()
-            elif user_input == "n":
+            elif user_input == "n" or user_input == "3":
                 menu()
             elif user_input == "e":
                 sys.exit()
@@ -123,7 +123,7 @@ def edit_person():
             edit_name = input("Name: ").title()
             edit_type = input("Type (roommate, cat, item): ")
             edit_dict = {"name": edit_name, "type": edit_type}
-            json_data["people"].update(edit_dict)
+            person[f"{person_input}"].update(edit_dict)
 
     dump_json(json_data)
 

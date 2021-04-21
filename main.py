@@ -16,6 +16,18 @@ def menu():
         sys.exit()
 
 
+def exit_menu():
+    select = (
+        input("Would you like to return to the main (m)enu or (e)xit the program? ")
+        .casefold()
+        .strip()
+    )
+    if select == "m":
+        menu()
+    elif select == "e":
+        sys.exit()
+
+
 def utility_sum():
     while True:
         water = make_flt("Give me the water bill: $")
@@ -32,32 +44,12 @@ def utility_sum():
     print(f"Utility Total: ${total}")
 
     utility_calc(total)
-
-    select = (
-        input("Would you like to return to the main (m)enu or (e)xit the program? ")
-        .casefold()
-        .strip()
-    )
-    if select == "m":
-        menu()
-    elif select == "e":
-        sys.exit()
-
-
-def make_flt(prompt):
-    """get input and validate type"""
-    while True:
-        try:
-            var = float(input(prompt))
-            return var
-        except ValueError:
-            print("Please enter a valid number.")
+    exit_menu()
 
 
 def utility_calc(total):
-    with open("test.json", "r") as json_file:
-        json_data = json.load(json_file)
-    # iterate through json data to add up number of roommates, cats, etc.
+    json_data = load_json()
+
     num_roommates = 0
     num_cats = 0
     # TODO: build out calculator
@@ -76,8 +68,8 @@ def utility_calc(total):
     total_per = round(total / num_roommates, 2)
     print(f"${total_per}")
 
+    exit_menu()
 
-# write function to delete or update an existing roommate.
 
 def user_menu():
     user_input = (
@@ -116,6 +108,8 @@ def new_person():
 
     dump_json(json_data)
 
+    exit_menu()
+
 
 def edit_person():
     json_data = load_json()
@@ -132,6 +126,8 @@ def edit_person():
             json_data["people"].update(edit_dict)
 
     dump_json(json_data)
+
+    exit_menu()
 
 
 def load_json():
@@ -152,6 +148,17 @@ def time(json_data):
 
     json_data["dt"] = timestamp
     return json_data
+
+
+def make_flt(prompt):
+    """get input and validate type"""
+    while True:
+        try:
+            var = float(input(prompt))
+            return var
+        except ValueError:
+            print("Please enter a valid number.")
+
 
 # TODO
 # In Progress: Refactoring user menu.

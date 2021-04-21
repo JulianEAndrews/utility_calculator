@@ -153,12 +153,14 @@ def time(json_data):
     json_data["dt"] = timestamp
     return json_data
 
-# Use a chain map for default settings when initializing new list info.
+# TODO
+# In Progress: Refactoring user menu.
 
+# Completed: Create function that adds new roommate/cat to main database
+
+# Use a chain map for default settings when initializing new list info. Check json.update/json.append
 # Total cost of utilities -> calculate kiln cost, subtract kiln cost -> calculate price per day for bill period ->
 # Charge cats and subtract that from total -> divide total remaining cost by number of roommates -> charge roommates
-
-# Complete: Create function that adds new roommate/cat to main database
 # if water month then factor in 2 month cost with days of cats
 
 

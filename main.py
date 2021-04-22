@@ -116,14 +116,17 @@ def edit_person():
 
     for thing in json_data["people"]:
         print(thing["name"], thing["type"])
-    person_input = input("Please select person: ")
+    person_input = input("Please select person: ").title()
 
     for person in json_data["people"]:
         if person["name"] == person_input:
             edit_name = input("Name: ").title()
-            edit_type = input("Type (roommate, cat, item): ")
-            edit_dict = {"name": edit_name, "type": edit_type}
-            person[f"{person_input}"].update(edit_dict)
+            edit_type = input("Type (roommate, cat, item): ").title()
+            person["name"] = edit_name
+            person["type"] = edit_type
+            print("Update successful!")
+            print(f"{person_input} updated to: {edit_name}")
+            print(f"Type: {edit_type}")
 
     dump_json(json_data)
 

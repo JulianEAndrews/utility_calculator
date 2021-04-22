@@ -9,7 +9,7 @@ def menu():
         "1. Utility Calculator (u)\n2. User Menu (m)\n3. Exit (e)\n: "
     ).casefold()
     if select == "u" or select == "1":
-        utility_sum()
+        get_utilities()
     elif select == "m" or select == "2":
         user_menu()
     elif select == "e" or select == "3":
@@ -28,7 +28,7 @@ def exit_menu():
         sys.exit()
 
 
-def utility_sum():
+def get_utilities():
     while True:
         water = make_flt("Give me the water bill: $")
         gas = make_flt("Give me the gas bill: $")
@@ -38,8 +38,14 @@ def utility_sum():
             f"{water} {gas} {internet} {electricity}, correct?  "
         ).casefold()
         if conf in ["y", "yes"]:
-            break
+            util_input(water, gas, internet, electricity)  # pass into utility_sum? or utility_calc?
 
+
+def util_input(water, gas, internet, electricity):
+    return water, gas, internet, electricity
+
+
+def utility_sum(water, gas, internet, electricity):
     total = water + gas + internet + electricity
     print(f"Utility Total: ${total}")
 
@@ -85,8 +91,8 @@ def user_menu():
                 new_person()
             elif user_input == "e" or user_input == "2":
                 edit_person()
-            elif user_input == "n" or user_input == "3":
-                menu()
+            elif user_input == "d" or user_input == "3":
+                delete_person()
             elif user_input == "e":
                 sys.exit()
             else:
@@ -102,9 +108,10 @@ def new_person():
     new_type = input("Type (roommate, cat, item): ")
     new_dict = {"name": new_name, "type": new_type}
 
-    time(json_data)
-
     json_data["people"].append(new_dict)
+    print(json_data["people"])
+
+    time(json_data)
 
     dump_json(json_data)
 
@@ -125,8 +132,29 @@ def edit_person():
             person["name"] = edit_name
             person["type"] = edit_type
             print("Update successful!")
-            print(f"{person_input} updated to: {edit_name}")
+            print(f"{person_input} -> {edit_name}")
             print(f"Type: {edit_type}")
+
+    time(json_data)
+
+    dump_json(json_data)
+
+    exit_menu()
+
+
+def delete_person():
+    json_data = load_json()
+
+    for person in json_data["people"]:
+        print(person["name"], person["type"])
+    person_input = input("Please select person: ").title()
+
+    new = [x for x in json_data["people"] if not (x["name"] == person_input)]
+    json_data["people"] = new
+    print("Delete successful!")
+    print(new)
+
+    time(json_data)
 
     dump_json(json_data)
 
@@ -168,7 +196,6 @@ def make_flt(prompt):
 
 # Completed: Create function that adds new roommate/cat to main database
 
-# Use a chain map for default settings when initializing new list info. Check json.update/json.append
 # Total cost of utilities -> calculate kiln cost, subtract kiln cost -> calculate price per day for bill period ->
 # Charge cats and subtract that from total -> divide total remaining cost by number of roommates -> charge roommates
 # if water month then factor in 2 month cost with days of cats

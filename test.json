@@ -1,17 +1,23 @@
 {
-    "dt": "1618854035",
+    "dt": "1619133227",
+    "utilities": {
+        "electricity": 4.0,
+        "gas": 2.0,
+        "internet": 3.0,
+        "water": 1.0
+    },
     "people": [
         {
-            "name": "monty",
-            "type": "human"
+            "name": "Python",
+            "type": "Cat"
         },
         {
-            "name": "python",
-            "type": "cat"
+            "name": "Julian",
+            "type": "Roommate"
         },
         {
-            "name": "Julia",
-            "type": "human"
+            "name": "Monty",
+            "type": "Roommate"
         }
     ]
 }

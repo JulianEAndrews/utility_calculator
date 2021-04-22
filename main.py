@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 
 
+# Menus
 def menu():
     print("\nSelect from the following menu options:")
     select = input(
@@ -28,55 +29,121 @@ def exit_menu():
         sys.exit()
 
 
+# Utilities
+water = 0.0
+gas = 0.0
+internet = 0.0
+electricity = 0.0
 def get_utilities():
     while True:
-        water = make_flt("Give me the water bill: $")
-        gas = make_flt("Give me the gas bill: $")
-        internet = make_flt("Give me the internet bill: $")
-        electricity = make_flt("Give me the electrical bill: $")
+        electricity = make_flt("Electricity bill: $")
+        gas = make_flt("Gas bill: $")
+        internet = make_flt("Internet bill: $")
+        water = make_flt("Water bill: $")
         conf = input(
-            f"{water} {gas} {internet} {electricity}, correct?  "
+            f"{electricity} {gas} {internet} {water}, correct? "
         ).casefold()
         if conf in ["y", "yes"]:
-            util_input(water, gas, internet, electricity)  # pass into utility_sum? or utility_calc?
+            json_data = load_json()
+            util_dict = {"electricity": electricity, "gas": gas, "internet": internet, "water": water}
+            json_data["utilities"] = util_dict
+            time(json_data)
+            dump_json(json_data)
+            print(json_data["utilities"])
+            utility_calc()
 
-
-def util_input(water, gas, internet, electricity):
-    return water, gas, internet, electricity
-
-
-def utility_sum(water, gas, internet, electricity):
+"""
+def utility_sum():
     total = water + gas + internet + electricity
     print(f"Utility Total: ${total}")
 
     utility_calc(total)
     exit_menu()
+"""
 
-
-def utility_calc(total):
+def utility_calc():
     json_data = load_json()
 
     num_roommates = 0
     num_cats = 0
     # TODO: build out calculator
-    for thing in json_data["people"]:
-        print(thing["name"])
-        print(thing["type"])
-        room_type = thing["type"]
-        if room_type == "roommate":
+    for person in json_data["people"]:
+        print(person["name"])
+        print(person["type"])
+        room_type = person["type"]
+        if room_type == "Roommate":
             num_roommates += 1
-        elif room_type == "cat":
+        elif room_type == "Cat":
             num_cats += 1
-        elif room_type == "kiln":
-            kiln_cost = input("Input kiln cost: $")
-            total = total - kiln_cost
+        elif room_type == "Kiln":
+            continue
+            # kiln_cost = input("Input kiln cost: $")
     print(num_roommates)
-    total_per = round(total / num_roommates, 2)
-    print(f"${total_per}")
+    print(num_cats)
+
+    water()
 
     exit_menu()
 
 
+# TODO
+def water():
+    json_data = load_json()
+    month_1 = input("Enter first water month: ").casefold()
+    month_2 = input("Enter second water month: ").casefold()
+    bill_days = month_to_days(month_1) + month_to_days(month_2)
+    water_per_day = json_data["utilities"]["water"] / bill_days
+
+    for person in json_data["people"]:
+        if person["type"] == "Cat":
+            days_here = make_flt("How many days were they here?: ")/bill_days
+            print(days_here)
+            cat_owes = water_per_day * days_here
+            print(cat_owes)
+
+    for person in json_data["people"]:
+        if person["type"] == "Roommate":
+            roommate_owes = water_per_day * bill_days
+
+
+def month_to_days(month):
+    if month == "january":
+        days = 31
+    elif month == "february":
+        days = 28
+    elif month == "march":
+        days = 31
+    elif month == "april":
+        days = 30
+    elif month == "may":
+        days = 31
+    elif month == "june":
+        days = 30
+    elif month == "july":
+        days = 31
+    elif month == "august":
+        days = 31
+    elif month == "september":
+        days = 30
+    elif month == "october":
+        days = 31
+    elif month == "november":
+        days = 30
+    elif month == "december":
+        days = 31
+    return days
+
+def make_flt(prompt):
+    """get input and validate type"""
+    while True:
+        try:
+            var = float(input(prompt))
+            return var
+        except ValueError:
+            print("Please enter a valid number.")
+
+
+# Users
 def user_menu():
     user_input = (
         input("Would you like to:\n1. Add a new person/item (a),\n"
@@ -161,6 +228,7 @@ def delete_person():
     exit_menu()
 
 
+# json functions
 def load_json():
     with open("test.json", "r") as json_file:
         json_data = json.load(json_file)
@@ -179,16 +247,6 @@ def time(json_data):
 
     json_data["dt"] = timestamp
     return json_data
-
-
-def make_flt(prompt):
-    """get input and validate type"""
-    while True:
-        try:
-            var = float(input(prompt))
-            return var
-        except ValueError:
-            print("Please enter a valid number.")
 
 
 # TODO

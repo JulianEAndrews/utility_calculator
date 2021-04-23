@@ -1,23 +1,40 @@
 {
-    "dt": "1619133227",
+    "dt": "1619142205",
+    "months": {
+        "month_1": "february",
+        "month_2": "march",
+        "month_3": "may"
+    },
     "utilities": {
-        "electricity": 4.0,
+        "electricity": 1.0,
         "gas": 2.0,
         "internet": 3.0,
-        "water": 1.0
+        "water": 4.0
     },
     "people": [
         {
             "name": "Python",
-            "type": "Cat"
+            "type": "Cat",
+            "month_1_mod": 0.0,
+            "month_2_mod": 0.0,
+            "month_3_mod": 0.0,
+            "owe": 0.0
         },
         {
             "name": "Julian",
-            "type": "Roommate"
+            "type": "Roommate",
+            "month_1_mod": 0.0,
+            "month_2_mod": 0.0,
+            "month_3_mod": 0.0,
+            "owe": 0.0
         },
         {
             "name": "Monty",
-            "type": "Roommate"
+            "type": "Roommate",
+            "month_1_mod": 0.0,
+            "month_2_mod": 0.0,
+            "month_3_mod": 0.0,
+            "owe": 0.0
         }
     ]
 }

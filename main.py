@@ -30,27 +30,30 @@ def exit_menu():
 
 
 # Utilities
-water = 0.0
-gas = 0.0
-internet = 0.0
-electricity = 0.0
 def get_utilities():
     while True:
+        month_1 = check_month("Enter water month 1: ")
+        month_2 = check_month("Enter water month 2/last month: ")
+        month_3 = check_month("Enter next month: ")
         electricity = make_flt("Electricity bill: $")
         gas = make_flt("Gas bill: $")
         internet = make_flt("Internet bill: $")
         water = make_flt("Water bill: $")
         conf = input(
-            f"{electricity} {gas} {internet} {water}, correct? "
+            f"{month_1} {month_2} {month_3} {electricity} {gas} {internet} {water}, correct? "
         ).casefold()
         if conf in ["y", "yes"]:
             json_data = load_json()
+            month_dict = {"month_1": month_1, "month_2": month_2, "month_3": month_3}
             util_dict = {"electricity": electricity, "gas": gas, "internet": internet, "water": water}
             json_data["utilities"] = util_dict
+            json_data["months"] = month_dict
             time(json_data)
             dump_json(json_data)
+            print(json_data["months"])
             print(json_data["utilities"])
             utility_calc()
+
 
 """
 def utility_sum():
@@ -60,6 +63,7 @@ def utility_sum():
     utility_calc(total)
     exit_menu()
 """
+
 
 def utility_calc():
     json_data = load_json()
@@ -73,8 +77,15 @@ def utility_calc():
         room_type = person["type"]
         if room_type == "Roommate":
             num_roommates += 1
+            person["month_1_mod"] = 1
+            person["month_2_mod"] = 1
+            person["month_3_mod"] = 1
         elif room_type == "Cat":
             num_cats += 1
+            cat_name = person["name"]
+            person["month_1_mod"] = make_flt(f"Enter {cat_name}'s Month 1 Mod: ")
+            person["month_2_mod"] = make_flt(f"Enter {cat_name}'s Month 2 Mod: ")
+            person["month_3_mod"] = make_flt(f"Enter {cat_name}'s Month 3 Mod: ")
         elif room_type == "Kiln":
             continue
             # kiln_cost = input("Input kiln cost: $")
@@ -86,7 +97,7 @@ def utility_calc():
     exit_menu()
 
 
-# TODO
+# TODO; update roommate and cat modifiers first
 def water():
     json_data = load_json()
     month_1 = input("Enter first water month: ").casefold()
@@ -132,6 +143,21 @@ def month_to_days(month):
     elif month == "december":
         days = 31
     return days
+
+
+def check_month(prompt):
+    """get input and validate type"""
+    while True:
+        try:
+            month = str(input(prompt))
+            if month not in ["january", "february", "march", "april",
+                           "may", "june", "july", "august",
+                           "september", "october", "november", "december"]:
+                pass
+            return month
+        except ValueError:
+            print("Please enter a month.")
+
 
 def make_flt(prompt):
     """get input and validate type"""

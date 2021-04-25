@@ -15,25 +15,25 @@
         {
             "name": "Python",
             "type": "Cat",
-            "month_1_mod": 0.0,
-            "month_2_mod": 0.0,
-            "month_3_mod": 0.0,
+            "water_mod": 0.0,
+            "elec_gas_mod": 0.0,
+            "internet_mod": 0.0,
             "owe": 0.0
         },
         {
             "name": "Julian",
             "type": "Roommate",
-            "month_1_mod": 0.0,
-            "month_2_mod": 0.0,
-            "month_3_mod": 0.0,
+            "water_mod": 0.0,
+            "elec_gas_mod": 0.0,
+            "internet_mod": 0.0,
             "owe": 0.0
         },
         {
             "name": "Monty",
             "type": "Roommate",
-            "month_1_mod": 0.0,
-            "month_2_mod": 0.0,
-            "month_3_mod": 0.0,
+            "water_mod": 0.0,
+            "elec_gas_mod": 0.0,
+            "internet_mod": 0.0,
             "owe": 0.0
         }
     ]

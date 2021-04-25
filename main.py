@@ -77,15 +77,15 @@ def utility_calc():
         room_type = person["type"]
         if room_type == "Roommate":
             num_roommates += 1
-            person["month_1_mod"] = 1
-            person["month_2_mod"] = 1
-            person["month_3_mod"] = 1
+            person["water_mod"] = 1
+            person["elec_gas_mod"] = 1
+            person["internet_mod"] = 1
         elif room_type == "Cat":
             num_cats += 1
             cat_name = person["name"]
-            person["month_1_mod"] = make_flt(f"Enter {cat_name}'s Month 1 Mod: ")
-            person["month_2_mod"] = make_flt(f"Enter {cat_name}'s Month 2 Mod: ")
-            person["month_3_mod"] = make_flt(f"Enter {cat_name}'s Month 3 Mod: ")
+            person["water_mod"] = make_flt(f"Enter {cat_name}'s water mod: ")
+            person["elec_gas_mod"] = make_flt(f"Enter {cat_name}'s electricity/gas mod: ")
+            person["internet_mod"] = make_flt(f"Enter {cat_name}'s internet mod: ")
         elif room_type == "Kiln":
             continue
             # kiln_cost = input("Input kiln cost: $")
@@ -153,7 +153,7 @@ def check_month(prompt):
             if month not in ["january", "february", "march", "april",
                            "may", "june", "july", "august",
                            "september", "october", "november", "december"]:
-                pass
+                continue
             return month
         except ValueError:
             print("Please enter a month.")

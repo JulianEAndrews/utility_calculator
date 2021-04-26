@@ -32,9 +32,9 @@ def exit_menu():
 # Utilities
 def get_utilities():
     while True:
-        month_1 = check_month("Enter water month 1: ")
-        month_2 = check_month("Enter water month 2/last month: ")
-        month_3 = check_month("Enter next month: ")
+        month_1 = check_month("Enter water month 1: ").casefold()
+        month_2 = check_month("Enter water month 2/last month: ").casefold()
+        month_3 = check_month("Enter next month: ").casefold()
         electricity = make_flt("Electricity bill: $")
         gas = make_flt("Gas bill: $")
         internet = make_flt("Internet bill: $")
@@ -80,12 +80,18 @@ def utility_calc():
             person["water_mod"] = 1
             person["elec_gas_mod"] = 1
             person["internet_mod"] = 1
+            json_data["utilities"]["water_mod"] += 1
+            json_data["utilities"]["elec_gas_mod"] += 1
+            json_data["utilities"]["internet_mod"] += 1
         elif room_type == "Cat":
             num_cats += 1
             cat_name = person["name"]
             person["water_mod"] = make_flt(f"Enter {cat_name}'s water mod: ")
             person["elec_gas_mod"] = make_flt(f"Enter {cat_name}'s electricity/gas mod: ")
             person["internet_mod"] = make_flt(f"Enter {cat_name}'s internet mod: ")
+            json_data["utilities"]["water_mod"] += person["water_mod"]
+            json_data["utilities"]["elec_gas_mod"] += person["elec_gas_mod"]
+            json_data["utilities"]["internet_mod"] += person["internet_mod"]
         elif room_type == "Kiln":
             continue
             # kiln_cost = input("Input kiln cost: $")
@@ -100,23 +106,32 @@ def utility_calc():
 # TODO; update roommate and cat modifiers first
 def water():
     json_data = load_json()
-    month_1 = input("Enter first water month: ").casefold()
-    month_2 = input("Enter second water month: ").casefold()
+
+    """
+    month_1 = check_month("Enter first water month: ").casefold()
+    month_2 = check_month("Enter second water month: ").casefold()
+    """
+
+    # Use roommate mod instead of days here calculation.
+    """
     bill_days = month_to_days(month_1) + month_to_days(month_2)
     water_per_day = json_data["utilities"]["water"] / bill_days
+    """
 
     for person in json_data["people"]:
         if person["type"] == "Cat":
-            days_here = make_flt("How many days were they here?: ")/bill_days
-            print(days_here)
-            cat_owes = water_per_day * days_here
+            cat_owes = (person["water_mod"]/json_data["utilities"]["total_mod"])\
+                       * json_data["utilities"]["water"]
             print(cat_owes)
 
     for person in json_data["people"]:
         if person["type"] == "Roommate":
-            roommate_owes = water_per_day * bill_days
+            roommate_owes = (person["water_mod"]/json_data["utilities"]["total_mod"])\
+                            * json_data["utilities"]["water"]
+            print(roommate_owes)
 
 
+# Potentially redundant function.
 def month_to_days(month):
     if month == "january":
         days = 31
@@ -149,10 +164,11 @@ def check_month(prompt):
     """get input and validate type"""
     while True:
         try:
-            month = str(input(prompt))
+            month = input(prompt)
             if month not in ["january", "february", "march", "april",
                            "may", "june", "july", "august",
                            "september", "october", "november", "december"]:
+                print("Please enter a month (january, february, etc.).")
                 continue
             return month
         except ValueError:
@@ -172,9 +188,11 @@ def make_flt(prompt):
 # Users
 def user_menu():
     user_input = (
-        input("Would you like to:\n1. Add a new person/item (a),\n"
+        input("Please select from the following menu:\n1. Add a new person/item (a),\n"
               "2. Edit a person/item (e),\n"
-              "3. Delete a person/item (d)?\n: ")
+              "3. Delete a person/item (d)\n"
+              "4. Return to the main menu (m)\n"
+              "5. Exit program (e)\n: ")
         .casefold()
         .strip()
     )
@@ -186,10 +204,10 @@ def user_menu():
                 edit_person()
             elif user_input == "d" or user_input == "3":
                 delete_person()
-            elif user_input == "e":
-                sys.exit()
-            else:
+            elif user_input == "m" or user_input == "4":
                 menu()
+            elif user_input == "e" or user_input == "5":
+                sys.exit()
         except KeyboardInterrupt:
             print("Interrupted")
 
@@ -214,8 +232,8 @@ def new_person():
 def edit_person():
     json_data = load_json()
 
-    for thing in json_data["people"]:
-        print(thing["name"], thing["type"])
+    for person in json_data["people"]:
+        print(person["name"], person["type"])
     person_input = input("Please select person: ").title()
 
     for person in json_data["people"]:

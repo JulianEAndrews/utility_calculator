@@ -1,5 +1,5 @@
 {
-    "dt": "1619142205",
+    "dt": "1619395346",
     "months": {
         "month_1": "february",
         "month_2": "march",
@@ -18,7 +18,9 @@
             "water_mod": 0.0,
             "elec_gas_mod": 0.0,
             "internet_mod": 0.0,
-            "owe": 0.0
+            "water_owed": 0.0,
+            "elec_gas_owed": 0.0,
+            "internet_owed": 0.0
         },
         {
             "name": "Julian",
@@ -26,7 +28,9 @@
             "water_mod": 0.0,
             "elec_gas_mod": 0.0,
             "internet_mod": 0.0,
-            "owe": 0.0
+            "water_owed": 0.0,
+            "elec_gas_owed": 0.0,
+            "internet_owed": 0.0
         },
         {
             "name": "Monty",
@@ -34,7 +38,14 @@
             "water_mod": 0.0,
             "elec_gas_mod": 0.0,
             "internet_mod": 0.0,
-            "owe": 0.0
+            "water_owed": 0.0,
+            "elec_gas_owed": 0.0,
+            "internet_owed": 0.0
+        },
+        {
+            "name": "Kiln",
+            "type": "Electrical",
+            "elec_gas_owed": 0.0
         }
     ]
 }
